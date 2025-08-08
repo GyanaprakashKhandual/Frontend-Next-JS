@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Background Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gradient-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .label {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Linear Gradients */
+        .linear-1 {
+            background: linear-gradient(45deg, #f8fafc, #ffffff, #3b82f6, #fdf2f8);
+        }
+
+        .linear-2 {
+            background: linear-gradient(to right, #f8fafc, #3b82f6);
+        }
+
+        .linear-3 {
+            background: linear-gradient(to bottom, #ffffff, #fdf2f8);
+        }
+
+        .linear-4 {
+            background: linear-gradient(135deg, #3b82f6, #f8fafc, #fdf2f8);
+        }
+
+        .linear-5 {
+            background: linear-gradient(90deg, #fdf2f8, #ffffff, #f8fafc, #3b82f6);
+        }
+
+        .linear-6 {
+            background: linear-gradient(180deg, #3b82f6 0%, #ffffff 50%, #fdf2f8 100%);
+        }
+
+        /* Radial Gradients */
+        .radial-1 {
+            background: radial-gradient(circle, #f8fafc, #3b82f6);
+        }
+
+        .radial-2 {
+            background: radial-gradient(ellipse at center, #ffffff, #fdf2f8, #3b82f6);
+        }
+
+        .radial-3 {
+            background: radial-gradient(circle at top left, #fdf2f8, #f8fafc);
+        }
+
+        .radial-4 {
+            background: radial-gradient(ellipse at bottom right, #3b82f6, #ffffff, #fdf2f8);
+        }
+
+        .radial-5 {
+            background: radial-gradient(circle at 30% 70%, #f8fafc, #fdf2f8, #3b82f6);
+        }
+
+        /* Complex Gradients */
+        .complex-1 {
+            background: linear-gradient(45deg, #f8fafc 25%, transparent 25%), 
+                        linear-gradient(-45deg, #fdf2f8 25%, transparent 25%), 
+                        linear-gradient(45deg, transparent 75%, #3b82f6 75%), 
+                        linear-gradient(-45deg, transparent 75%, #ffffff 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+        }
+
+        .complex-2 {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(248, 250, 252, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(253, 242, 248, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(59, 130, 246, 0.6) 0%, transparent 50%),
+                linear-gradient(135deg, #ffffff, #f8fafc);
+        }
+
+        .complex-3 {
+            background: 
+                conic-gradient(from 0deg, #f8fafc, #ffffff, #3b82f6, #fdf2f8, #f8fafc);
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav select {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* Color palette reference */
+        .color-ref {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            font-size: 12px;
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+        }
+
+        .sky-50 { background-color: #f8fafc; }
+        .white { background-color: #ffffff; }
+        .blue-500 { background-color: #3b82f6; }
+        .pink-50 { background-color: #fdf2f8; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <select onchange="scrollToSection(this.value)">
+            <option value="">Select Gradient</option>
+            <option value="linear-1">Linear 45deg Multi-color</option>
+            <option value="linear-2">Linear Horizontal Sky-Blue</option>
+            <option value="linear-3">Linear Vertical White-Pink</option>
+            <option value="linear-4">Linear Diagonal Blue-Sky-Pink</option>
+            <option value="linear-5">Linear 4-Color Blend</option>
+            <option value="linear-6">Linear Blue-White-Pink</option>
+            <option value="radial-1">Radial Sky-Blue</option>
+            <option value="radial-2">Radial Ellipse Multi</option>
+            <option value="radial-3">Radial Top-Left Pink-Sky</option>
+            <option value="radial-4">Radial Bottom-Right</option>
+            <option value="radial-5">Radial Offset Center</option>
+            <option value="complex-1">Pattern Overlay</option>
+            <option value="complex-2">Multi-Radial Overlay</option>
+            <option value="complex-3">Conic Gradient</option>
+        </select>
+    </div>
+
+    <div class="color-ref">
+        <div>Color Palette:</div>
+        <div class="color-swatch sky-50" title="Sky White 50: #f8fafc"></div>
+        <div class="color-swatch white" title="White: #ffffff"></div>
+        <div class="color-swatch blue-500" title="Blue 500: #3b82f6"></div>
+        <div class="color-swatch pink-50" title="Pink 50a: #fdf2f8"></div>
+    </div>
+
+    <section class="gradient-section linear-1" id="linear-1">
+        <div class="label">Linear Gradient 45° - Multi-color</div>
+    </section>
+
+    <section class="gradient-section linear-2" id="linear-2">
+        <div class="label">Linear Gradient - Sky White to Blue</div>
+    </section>
+
+    <section class="gradient-section linear-3" id="linear-3">
+        <div class="label">Linear Gradient - White to Pink</div>
+    </section>
+
+    <section class="gradient-section linear-4" id="linear-4">
+        <div class="label">Linear Gradient 135° - Blue to Sky to Pink</div>
+    </section>
+
+    <section class="gradient-section linear-5" id="linear-5">
+        <div class="label">Linear Gradient - 4 Color Blend</div>
+    </section>
+
+    <section class="gradient-section linear-6" id="linear-6">
+        <div class="label">Linear Gradient - Blue to White to Pink</div>
+    </section>
+
+    <section class="gradient-section radial-1" id="radial-1">
+        <div class="label">Radial Gradient - Sky White to Blue</div>
+    </section>
+
+    <section class="gradient-section radial-2" id="radial-2">
+        <div class="label">Radial Ellipse - White to Pink to Blue</div>
+    </section>
+
+    <section class="gradient-section radial-3" id="radial-3">
+        <div class="label">Radial Top-Left - Pink to Sky White</div>
+    </section>
+
+    <section class="gradient-section radial-4" id="radial-4">
+        <div class="label">Radial Bottom-Right - Blue to White to Pink</div>
+    </section>
+
+    <section class="gradient-section radial-5" id="radial-5">
+        <div class="label">Radial Offset Center - Sky to Pink to Blue</div>
+    </section>
+
+    <section class="gradient-section complex-1" id="complex-1">
+        <div class="label">Complex Pattern - Layered Gradients</div>
+    </section>
+
+    <section class="gradient-section complex-2" id="complex-2">
+        <div class="label">Multi-Radial Overlay</div>
+    </section>
+
+    <section class="gradient-section complex-3" id="complex-3">
+        <div class="label">Conic Gradient - Full Spectrum</div>
+    </section>
+
+    <script>
+        function scrollToSection(sectionId) {
+            if (sectionId) {
+                document.getElementById(sectionId).scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+            }
+        }
+
+        // Auto-scroll through gradients (optional - remove if not needed)
+        let autoScroll = false;
+        let currentIndex = 0;
+        const sections = ['linear-1', 'linear-2', 'linear-3', 'linear-4', 'linear-5', 'linear-6', 
+                         'radial-1', 'radial-2', 'radial-3', 'radial-4', 'radial-5', 
+                         'complex-1', 'complex-2', 'complex-3'];
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowDown' || e.key === 'Space') {
+                e.preventDefault();
+                currentIndex = (currentIndex + 1) % sections.length;
+                scrollToSection(sections[currentIndex]);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                currentIndex = (currentIndex - 1 + sections.length) % sections.length;
+                scrollToSection(sections[currentIndex]);
+            }
+        });
+    </script>
+</body>
+</html>
